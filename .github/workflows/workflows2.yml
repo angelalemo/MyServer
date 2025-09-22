@@ -1,0 +1,13 @@
+name: workflow2
+on:
+  workflow_run:
+    workflows: ["main"]
+    types:
+      - completed
+
+jobs:
+  job1:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print message
+        run: echo "Workflow2 triggered after main completed"
