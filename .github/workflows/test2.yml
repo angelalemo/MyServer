@@ -29,9 +29,9 @@ jobs:
         run: npm run build  # แก้เป็นคำสั่ง build จริงของคุณ
 
       # Run Test1.js และตรวจสอบ exit code
-      - name: Run Test1
+      - name: Run test
         run: |
-          output=$(node dist/Test1.js)
+          output=$(node dist/test.js)
           exit_code=$?
 
           echo "Output: $output"
