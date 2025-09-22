@@ -1,4 +1,4 @@
-name: test2
+name: CombinedWorkflow
 
 on:
   push:
@@ -6,29 +6,38 @@ on:
       - main
 
 jobs:
-  job1:
+  build-and-test:
     runs-on: ubuntu-latest
 
     steps:
+      # Checkout โค้ด
       - name: Checkout code
         uses: actions/checkout@v2
 
+      # Setup Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
           node-version: '14'
 
+      # (Optional) Install dependencies ถ้ามี
+      - name: Install dependencies
+        run: npm install
+
+      # Build project ถ้ามี build step ใน main workflow
+      - name: Build project
+        run: npm run build  # แก้เป็นคำสั่ง build จริงของคุณ
+
+      # Run Test1.js และตรวจสอบ exit code
       - name: Run Test1
         run: |
-          # รันสคริปต์ Node.js และเก็บ output
           output=$(node dist/Test1.js)
-          exit_code=$?  # จับ exit code ของคำสั่ง node
+          exit_code=$?
 
           echo "Output: $output"
           echo "Exit code: $exit_code"
 
-          # ตรวจสอบรหัสสถานะ หากไม่เท่ากับ 0 ให้ workflow fail
           if [ $exit_code -ne 0 ]; then
-            echo "Error: Test1 failed with exit code $exit_code"
-            exit 1
+            echo "Error: test failed with exit code $exit_code"
+            exit 1  # Exit the workflow because error
           fi
