@@ -4,30 +4,25 @@ on:
   push:
     branches:
       - main
-
 jobs:
   job1:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '14'
+    - name: Setup node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+    - name: Run Test
+      run: |
+        output=$(node dist/test.js)
+        # capture exit code
+        exit_code=$output
 
-      - name: Run Test1
-        run: |
-          output=$(node dist/Test1.js)
-          # capture exit code
-          exit_code=$?
-
-          echo "Output: $output"
-          echo "Exit code: $exit_code"
-
-          if [ $exit_code -ne 0 ]; then
-            echo "Error: test failed with exit code $exit_code"
-            exit 1  # Exit the workflow because error
-          fi
+        if [ $exit_code -ne 0 ]; then
+          echo "Error test fail $exit_code"
+          exit 1 #Exit the workflow because error
+        fi
