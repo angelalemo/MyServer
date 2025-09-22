@@ -20,14 +20,15 @@ jobs:
 
       - name: Run Test1
         run: |
+          # รันสคริปต์ Node.js และเก็บ output
           output=$(node dist/Test1.js)
-          # capture exit code
-          exit_code=$?
+          exit_code=$?  # จับ exit code ของคำสั่ง node
 
           echo "Output: $output"
           echo "Exit code: $exit_code"
 
+          # ตรวจสอบรหัสสถานะ หากไม่เท่ากับ 0 ให้ workflow fail
           if [ $exit_code -ne 0 ]; then
-            echo "Error: test failed with exit code $exit_code"
-            exit 1  # Exit the workflow because error
+            echo "Error: Test1 failed with exit code $exit_code"
+            exit 1
           fi
